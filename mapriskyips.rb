@@ -31,8 +31,7 @@ end
 def geocode_ip(iplist)
   geocodes = Array.new
   iplist.each{|ip|
-    s = Geocoder.search(ip)
-    pp s
+    geocodes << Geocoder.search(ip)
   }
   return geocodes
 end
@@ -42,7 +41,7 @@ end
 
 def main()
 
-# http://www.projecthoneypot.org/list_of_ips.php?t=h&rss=1&rf=138409
+#http://www.projecthoneypot.org/list_of_ips.php?t=h&rss=1&rf=138409
 #http://www.projecthoneypot.org/list_of_ips.php?t=p&rss=1&rf=138409
 #http://www.projecthoneypot.org/list_of_ips.php?t=s&rss=1&rf=138409
 #http://www.projecthoneypot.org/list_of_ips.php?t=d&rss=1&rf=138409
@@ -51,14 +50,16 @@ def main()
   list = Array.new
   geocodes = Array.new
   
+  puts "Grabbing RSS feeds for IPs..."
   types.each{|x|
   link = "http://www.projecthoneypot.org/list_of_ips.php?t=#{x}&rss=1&rf=138409"
   rss = get_rss_feed(link)
   list << parse_feed(rss)
   }
-  puts "Done"
+  puts "Done grabbing IPs..."
   list = list.flatten
-  geocode_ip(list)
+  puts "Geocoding…."
+  pp geocode_ip(list)
   #create_output()
   
 end
